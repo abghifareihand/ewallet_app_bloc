@@ -3,43 +3,35 @@ import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:ewallet_app/presentation/widgets/custom_form_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ProfileEditPage extends StatefulWidget {
+  const ProfileEditPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ProfileEditPage> createState() => _ProfileEditPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ProfileEditPageState extends State<ProfileEditPage> {
   bool isHide = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
         ),
         children: [
-          Container(
-            width: 155,
-            height: 50,
-            margin: const EdgeInsets.only(
-              top: 100,
-              bottom: 100,
-            ),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/logo_light.png'),
-              ),
-            ),
-          ),
-          Text(
-            'Login &\nGrow Your Finance',
-            style: blackTextStyle.copyWith(
-              fontSize: 20,
-              fontWeight: semiBold,
-            ),
-          ),
           const SizedBox(
             height: 30.0,
           ),
@@ -51,6 +43,22 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: Column(
               children: [
+                /// Username
+                const CustomFormField(
+                  title: 'Username',
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+
+                /// Fullname
+                const CustomFormField(
+                  title: 'Full Name',
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+
                 /// Email Address
                 const CustomFormField(
                   title: 'Email Address',
@@ -77,35 +85,20 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Forgot Password',
-                    style: blueTextStyle,
-                  ),
-                ),
+
                 const SizedBox(
                   height: 30,
                 ),
                 CustomFilledButton(
-                  title: 'Login',
+                  title: 'Update Now',
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', (route) => false);
+                        context, '/profile-edit-success', (route) => false);
                   },
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 50),
-          CustomTextbutton(
-            title: 'Create New Account',
-            onPressed: () {},
-          ),
-          const SizedBox(height: 50),
         ],
       ),
     );

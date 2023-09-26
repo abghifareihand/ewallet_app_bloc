@@ -2,8 +2,8 @@ import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
-class RegisterSuccessPage extends StatelessWidget {
-  const RegisterSuccessPage({super.key});
+class ProfileEditSuccessPage extends StatelessWidget {
+  const ProfileEditSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class RegisterSuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Akun Berhasil\nTerdaftar',
+              'Nice Update!',
               style: blackTextStyle.copyWith(
                 fontSize: 20,
                 fontWeight: semiBold,
@@ -25,7 +25,7 @@ class RegisterSuccessPage extends StatelessWidget {
               height: 26.0,
             ),
             Text(
-              'Grow your finance start\ntogether with us',
+              'Your data is safe with\nour system',
               style: greyTextStyle.copyWith(
                 fontSize: 16,
               ),
@@ -36,7 +36,7 @@ class RegisterSuccessPage extends StatelessWidget {
             ),
             CustomFilledButton(
               width: 183,
-              title: 'Get Started',
+              title: 'My Profile',
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/home', (route) => false);
