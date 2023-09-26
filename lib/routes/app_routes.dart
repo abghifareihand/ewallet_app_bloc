@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:ewallet_app/presentation/pages/pin_page.dart';
 import 'package:ewallet_app/presentation/pages/profile_edit_page.dart';
 import 'package:ewallet_app/presentation/pages/profile_edit_pin_page.dart';
 import 'package:ewallet_app/presentation/pages/profile_edit_success_page.dart';
-import 'package:flutter/material.dart';
 import 'package:ewallet_app/presentation/pages/home_page.dart';
 import 'package:ewallet_app/presentation/pages/login_page.dart';
 import 'package:ewallet_app/presentation/pages/onboarding_page.dart';
