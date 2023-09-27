@@ -28,22 +28,33 @@ class AppRoutes {
       '/': (context) => const SplashPage(),
       '/onboarding': (context) => const OnboardingPage(),
       '/login': (context) => const LoginPage(),
+
+      /// Register
       '/register': (context) => const RegisterPage(),
       '/register-set-profile': (context) => const RegisterSetProfilePage(),
       '/register-set-ktp': (context) => const RegisterSetKtpPage(),
       '/register-success': (context) => const RegisterSuccessPage(),
+
       '/home': (context) => const HomePage(),
-      '/profile': (context) => const ProfilePage(),
       '/pin': (context) => const PinPage(),
+
+      /// Profile
+      '/profile': (context) => const ProfilePage(),
       '/profile-edit': (context) => const ProfileEditPage(),
       '/profile-edit-pin': (context) => const ProfileEditPinPage(),
       '/profile-edit-success': (context) => const ProfileEditSuccessPage(),
+
+      /// Topup
       '/topup': (context) => const TopupPage(),
       '/topup-amount': (context) => const TopupAmountPage(),
       '/topup-success': (context) => const TopupSuccessPage(),
+
+      /// Transfer
       '/transfer': (context) => const TransferPage(),
       '/transfer-amount': (context) => const TransferAmountPage(),
       '/transfer-success': (context) => const TransferSuccessPage(),
+
+      /// Data 
       '/data-provider': (context) => const DataProviderPage(),
       '/data-package': (context) => const DataPackagePage(),
       '/data-success': (context) => const DataSuccessPage(),

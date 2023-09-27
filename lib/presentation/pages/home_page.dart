@@ -1,3 +1,4 @@
+import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/presentation/widgets/home_latest_transaction_item.dart';
 import 'package:ewallet_app/presentation/widgets/home_service_item.dart';
@@ -202,7 +203,7 @@ class HomePage extends StatelessWidget {
             style: whiteTextStyle.copyWith(),
           ),
           Text(
-            'Rp 12.500',
+            formatCurrency(125600954),
             style: whiteTextStyle.copyWith(
               fontSize: 24,
               fontWeight: semiBold,
@@ -241,7 +242,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Text(
-                ' of Rp 20.000',
+                'of ${formatCurrency(20000)}',
                 style: blackTextStyle.copyWith(
                   fontWeight: semiBold,
                 ),
@@ -354,25 +355,25 @@ class HomePage extends StatelessWidget {
                   iconUrl: 'assets/ic_transaction_topup.png',
                   title: 'Top Up',
                   time: 'yesterday',
-                  value: '+ 450.000',
+                  value: 450000,
                 ),
                 HomeLatestTransactionItem(
                   iconUrl: 'assets/ic_transaction_cashback.png',
                   title: 'Cashback',
                   time: 'Sep 11',
-                  value: '+ 22.000',
+                  value: 22000,
                 ),
                 HomeLatestTransactionItem(
                   iconUrl: 'assets/ic_transaction_withdraw.png',
                   title: 'Withdraw',
                   time: 'Sep 2',
-                  value: '- 5.000',
+                  value: 500000,
                 ),
                 HomeLatestTransactionItem(
                   iconUrl: 'assets/ic_transaction_electric.png',
                   title: 'Electric',
                   time: 'Feb 18',
-                  value: '- 12.300.000',
+                  value: 12300000,
                 ),
               ],
             ),

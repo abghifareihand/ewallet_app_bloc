@@ -1,3 +1,4 @@
+import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class DataPackageItem extends StatelessWidget {
             height: 6.0,
           ),
           Text(
-            'Rp $price',
+            formatCurrency(price),
             style: greyTextStyle.copyWith(
               fontSize: 12,
             ),

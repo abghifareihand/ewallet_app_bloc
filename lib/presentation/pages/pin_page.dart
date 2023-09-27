@@ -1,3 +1,4 @@
+import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,16 @@ class _PinPageState extends State<PinPage> {
       });
     }
 
-    if (pinController.text == '123123') {
-      Navigator.pop(context, true);
+    if (pinController.text.length == 6) {
+      if (pinController.text == '123123') {
+        Navigator.pop(context, true);
+      } else {
+        showCustomSnackbar(
+          context,
+          'PIN yang ada masukan salah. Silahkan coba lagi',
+     
+        );
+      }
     }
   }
 

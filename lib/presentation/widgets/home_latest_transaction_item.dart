@@ -1,3 +1,4 @@
+import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ class HomeLatestTransactionItem extends StatelessWidget {
   final String iconUrl;
   final String title;
   final String time;
-  final String value;
+  final int value;
   const HomeLatestTransactionItem({
     super.key,
     required this.iconUrl,
@@ -53,7 +54,7 @@ class HomeLatestTransactionItem extends StatelessWidget {
             ),
           ),
           Text(
-            value,
+            formatCurrency(value),
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: medium,
