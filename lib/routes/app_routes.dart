@@ -1,3 +1,6 @@
+import 'package:ewallet_app/presentation/pages/data_package_page.dart';
+import 'package:ewallet_app/presentation/pages/data_provider_page.dart';
+import 'package:ewallet_app/presentation/pages/data_success_page.dart';
 import 'package:ewallet_app/presentation/pages/topup_amount_page.dart';
 import 'package:ewallet_app/presentation/pages/topup_page.dart';
 import 'package:ewallet_app/presentation/pages/topup_success_page.dart';
@@ -40,7 +43,9 @@ class AppRoutes {
       '/topup-success': (context) => const TopupSuccessPage(),
       '/transfer': (context) => const TransferPage(),
       '/transfer-amount': (context) => const TransferAmountPage(),
-      '/transfer-success': (context) => const TransferSuccessPage(),
+      '/data-provider': (context) => const DataProviderPage(),
+      '/data-package': (context) => const DataPackagePage(),
+      '/data-success': (context) => const DataSuccessPage(),
     };
   }
 }
