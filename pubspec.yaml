@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
+  intl: ^0.18.1
   url_launcher: ^6.1.14
 
 dev_dependencies:

@@ -5,6 +5,7 @@ class CustomFormField extends StatelessWidget {
   final String title;
   final bool obscureText;
   final TextEditingController? controller;
+  final bool isShowTitle;
   final TextInputType? keyboardType;
   final Widget? suffixIcon;
 
@@ -13,6 +14,7 @@ class CustomFormField extends StatelessWidget {
     required this.title,
     this.obscureText = false,
     this.controller,
+    this.isShowTitle = true,
     this.keyboardType,
     this.suffixIcon,
   });
@@ -22,27 +24,29 @@ class CustomFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: blackTextStyle.copyWith(
-            fontWeight: medium,
+        if (isShowTitle) // Hanya menampilkan teks jika isShowTitle adalah true
+          Text(
+            title,
+            style: blackTextStyle.copyWith(
+              fontWeight: medium,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
+        if (isShowTitle) // Hanya menambahkan SizedBox jika isShowTitle adalah true
+          const SizedBox(
+            height: 8,
+          ),
         TextFormField(
           obscureText: obscureText,
           controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
+            hintText: isShowTitle ? null : title,
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
             ),
             contentPadding: const EdgeInsets.all(12),
           ),
-          
         ),
       ],
     );
