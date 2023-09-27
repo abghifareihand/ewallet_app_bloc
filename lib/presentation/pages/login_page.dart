@@ -1,7 +1,11 @@
+import 'package:ewallet_app/bloc/bloc/auth_bloc.dart';
+import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/login_model.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:ewallet_app/presentation/widgets/custom_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,7 +15,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
   bool isHide = true;
+
+  bool validate() {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +67,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 /// Email Address
-                const CustomFormField(
+                CustomFormField(
                   title: 'Email Address',
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(
@@ -63,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 /// Password
                 CustomFormField(
                   title: 'Password',
+                  controller: passwordController,
                   obscureText: isHide,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -90,11 +107,36 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                CustomFilledButton(
-                  title: 'Login',
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', (route) => false);
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthFailed) {
+                      showCustomSnackbar(context, state.error);
+                    }
+
+                    if (state is AuthSuccess) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/home', (route) => false);
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomFilledButton(
+                      title: state is AuthLoading ? 'Loading...' : 'Login',
+                      onPressed: () {
+                        if (validate()) {
+                          context.read<AuthBloc>().add(
+                                AuthLogin(
+                                  LoginModel(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  ),
+                                ),
+                              );
+                        } else {
+                          showCustomSnackbar(
+                              context, 'Semua field harus diisi');
+                        }
+                      },
+                    );
                   },
                 ),
               ],

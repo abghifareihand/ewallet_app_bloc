@@ -31,8 +31,8 @@ class AppRoutes {
 
       /// Register
       '/register': (context) => const RegisterPage(),
-      '/register-set-profile': (context) => const RegisterSetProfilePage(),
-      '/register-set-ktp': (context) => const RegisterSetKtpPage(),
+      //'/register-set-profile': (context) => const RegisterSetProfilePage(),
+      //'/register-set-ktp': (context) => const RegisterSetKtpPage(),
       '/register-success': (context) => const RegisterSuccessPage(),
 
       '/home': (context) => const HomePage(),

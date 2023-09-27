@@ -1,7 +1,12 @@
+import 'package:ewallet_app/bloc/bloc/auth_bloc.dart';
+import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/register_model.dart';
+import 'package:ewallet_app/presentation/pages/register_set_profile_page.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:ewallet_app/presentation/widgets/custom_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,7 +16,20 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final nameController = TextEditingController(text: '');
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
   bool isHide = true;
+
+  bool validate() {
+    if (nameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,17 +69,19 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             child: Column(
               children: [
-                /// Username
-                const CustomFormField(
-                  title: 'Username',
+                /// Name
+                CustomFormField(
+                  title: 'Name',
+                  controller: nameController,
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
 
                 /// Email Address
-                const CustomFormField(
+                CustomFormField(
                   title: 'Email Address',
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(
@@ -71,6 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 /// Password
                 CustomFormField(
                   title: 'Password',
+                  controller: passwordController,
                   obscureText: isHide,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -89,10 +110,41 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                CustomFilledButton(
-                  title: 'Continue',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/register-set-profile');
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthFailed) {
+                      showCustomSnackbar(context, state.error);
+                    }
+
+                    if (state is AuthCheckEmailSuccess) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterSetProfilePage(
+                            data: RegisterModel(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomFilledButton(
+                      title: state is AuthLoading ? 'Loading...' : 'Continue',
+                      onPressed: () {
+                        if (validate()) {
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthCheckEmail(emailController.text));
+                        } else {
+                          showCustomSnackbar(
+                              context, 'Semua field harus di isi !!');
+                        }
+                      },
+                    );
                   },
                 ),
               ],
