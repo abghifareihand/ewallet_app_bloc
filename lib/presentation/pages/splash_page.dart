@@ -1,4 +1,4 @@
-import 'package:ewallet_app/bloc/bloc/auth_bloc.dart';
+import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

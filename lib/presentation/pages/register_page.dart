@@ -1,4 +1,4 @@
-import 'package:ewallet_app/bloc/bloc/auth_bloc.dart';
+import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
 import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/data/models/register_model.dart';

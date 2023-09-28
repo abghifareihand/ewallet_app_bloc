@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ewallet_app/bloc/bloc/auth_bloc.dart';
+import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
