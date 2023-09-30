@@ -1,11 +1,21 @@
+import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
+import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:ewallet_app/presentation/widgets/custom_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileEditPinPage extends StatelessWidget {
+class ProfileEditPinPage extends StatefulWidget {
   const ProfileEditPinPage({super.key});
 
+  @override
+  State<ProfileEditPinPage> createState() => _ProfileEditPinPageState();
+}
+
+class _ProfileEditPinPageState extends State<ProfileEditPinPage> {
+  final oldPinController = TextEditingController(text: '');
+  final newPinController = TextEditingController(text: '');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +48,10 @@ class ProfileEditPinPage extends StatelessWidget {
             child: Column(
               children: [
                 /// Old PIN
-                const CustomFormField(
+                CustomFormField(
                   title: 'Old PIN',
+                  controller: oldPinController,
+                  obscureText: true,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(
@@ -47,8 +59,10 @@ class ProfileEditPinPage extends StatelessWidget {
                 ),
 
                 /// New PIN
-                const CustomFormField(
+                CustomFormField(
                   title: 'New PIN',
+                  controller: newPinController,
+                  obscureText: true,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(
@@ -58,10 +72,29 @@ class ProfileEditPinPage extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                CustomFilledButton(
-                  title: 'Update Now',
-                  onPressed: () {
-                    // Navigator.pushNamed(context, '/profile-edit-success');
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthFailed) {
+                      showCustomSnackbar(context, state.error);
+                    }
+
+                    if (state is AuthSuccess) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/profile-edit-success', (route) => false);
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomFilledButton(
+                      title: state is AuthLoading ? 'Loading...' : 'Update Now',
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              AuthUpdatePin(
+                                oldPinController.text,
+                                newPinController.text,
+                              ),
+                            );
+                      },
+                    );
                   },
                 ),
               ],

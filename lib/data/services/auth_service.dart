@@ -77,4 +77,23 @@ class AuthService {
       rethrow;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      final token = await LocalService().getToken();
+      final response = await http.post(
+        Uri.parse('$baseUrl/logout'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+      if (response.statusCode == 200) {
+        await LocalService().clearLocalStorage();
+      } else {
+        throw jsonDecode(response.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
