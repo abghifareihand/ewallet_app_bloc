@@ -3,7 +3,6 @@ import 'package:ewallet_app/presentation/pages/data_provider_page.dart';
 import 'package:ewallet_app/presentation/pages/data_success_page.dart';
 import 'package:ewallet_app/presentation/pages/topup_page.dart';
 import 'package:ewallet_app/presentation/pages/topup_success_page.dart';
-import 'package:ewallet_app/presentation/pages/transfer_amount_page.dart';
 import 'package:ewallet_app/presentation/pages/transfer_page.dart';
 import 'package:ewallet_app/presentation/pages/transfer_success_page.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class AppRoutes {
 
       /// Transfer
       '/transfer': (context) => const TransferPage(),
-      '/transfer-amount': (context) => const TransferAmountPage(),
+      //'/transfer-amount': (context) => const TransferAmountPage(),
       '/transfer-success': (context) => const TransferSuccessPage(),
 
       /// Data 

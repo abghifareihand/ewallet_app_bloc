@@ -8,6 +8,7 @@ class CustomFormField extends StatelessWidget {
   final bool isShowTitle;
   final TextInputType? keyboardType;
   final Widget? suffixIcon;
+  final Function(String)? onFieldSubmit;
 
   const CustomFormField({
     super.key,
@@ -16,7 +17,8 @@ class CustomFormField extends StatelessWidget {
     this.controller,
     this.isShowTitle = true,
     this.keyboardType,
-    this.suffixIcon,
+    this.suffixIcon, 
+    this.onFieldSubmit,
   });
 
   @override
@@ -47,6 +49,7 @@ class CustomFormField extends StatelessWidget {
             ),
             contentPadding: const EdgeInsets.all(12),
           ),
+          onFieldSubmitted: onFieldSubmit,
         ),
       ],
     );

@@ -1,19 +1,14 @@
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class TransferResultUserItem extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final String username;
-  final bool isVerified;
+  final UserModel user;
   final bool isSelected;
   const TransferResultUserItem({
     super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.username,
-    this.isVerified = false,
     this.isSelected = false,
+    required this.user,
   });
 
   @override
@@ -41,12 +36,11 @@ class TransferResultUserItem extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage(
-                  imageUrl,
-                ),
-              ),
+                  image: user.profilePicture == null
+                      ? const AssetImage('assets/img_profile.png')
+                      : NetworkImage(user.profilePicture!) as ImageProvider),
             ),
-            child: isVerified
+            child: user.verified == 1
                 ? Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -70,21 +64,21 @@ class TransferResultUserItem extends StatelessWidget {
           const SizedBox(
             height: 13.0,
           ),
-          Text(
-            name,
-            style: blackTextStyle.copyWith(
-              fontSize: 16,
-              fontWeight: medium,
-            ),
-          ),
+          Text('${user.name}',
+              style: blackTextStyle.copyWith(
+                fontSize: 16,
+                fontWeight: medium,
+              ),
+              overflow: TextOverflow.ellipsis),
           const SizedBox(
             height: 2.0,
           ),
           Text(
-            '@$username',
+            '@${user.username}',
             style: greyTextStyle.copyWith(
               fontSize: 12,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
