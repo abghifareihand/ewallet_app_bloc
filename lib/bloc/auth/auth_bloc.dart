@@ -111,6 +111,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailed(e.toString()));
         }
       }
+
+      // Update balance
+      if (event is AuthUpdateBalance) {
+        if (state is AuthSuccess) {
+          final currentUser = (state as AuthSuccess).user;
+          final updateBalance = currentUser.copyWith(
+              balance: currentUser.balance! + event.amount);
+
+          emit(AuthSuccess(updateBalance));
+        }
+      }
     });
   }
 }
