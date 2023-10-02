@@ -1,6 +1,6 @@
 import 'package:ewallet_app/bloc/user/user_bloc.dart';
 import 'package:ewallet_app/common/theme.dart';
-import 'package:ewallet_app/data/models/transfer_fomr_model.dart';
+import 'package:ewallet_app/data/models/transfer_form_model.dart';
 import 'package:ewallet_app/data/models/user_model.dart';
 import 'package:ewallet_app/presentation/pages/transfer_amount_page.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';

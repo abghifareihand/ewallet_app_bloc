@@ -1,18 +1,15 @@
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/transaction_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomeLatestTransactionItem extends StatelessWidget {
-  final String iconUrl;
-  final String title;
-  final String time;
-  final int value;
+  final TransactionModel transaction;
+
   const HomeLatestTransactionItem({
     super.key,
-    required this.iconUrl,
-    required this.title,
-    required this.time,
-    required this.value,
+    required this.transaction,
   });
 
   @override
@@ -24,7 +21,15 @@ class HomeLatestTransactionItem extends StatelessWidget {
       child: Row(
         children: [
           Image.asset(
-            iconUrl,
+            transaction.transactionType!.code == 'internet'
+                ? 'assets/ic_transaction_electric.png'
+                : transaction.transactionType!.code == 'top_up'
+                    ? 'assets/ic_transaction_topup.png'
+                    : transaction.transactionType!.code == 'transfer'
+                        ? 'assets/ic_transaction_transfer.png'
+                        : transaction.transactionType!.code == 'receive'
+                            ? 'assets/ic_transaction_cashback.png'
+                            : 'assets/ic_transaction_withdraw.png',
             width: 48,
           ),
           const SizedBox(
@@ -35,7 +40,7 @@ class HomeLatestTransactionItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  transaction.transactionType!.name.toString(),
                   style: blackTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: medium,
@@ -45,7 +50,8 @@ class HomeLatestTransactionItem extends StatelessWidget {
                   height: 2.0,
                 ),
                 Text(
-                  time,
+                  DateFormat('MMM dd, yyyy')
+                      .format(transaction.createdAt ?? DateTime.now()),
                   style: greyTextStyle.copyWith(
                     fontSize: 12,
                   ),
@@ -54,7 +60,10 @@ class HomeLatestTransactionItem extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(value),
+            formatCurrency(
+              transaction.amount ?? 0,
+              symbol: transaction.transactionType?.action == 'cr' ? '+ ' : '- ',
+            ),
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: medium,

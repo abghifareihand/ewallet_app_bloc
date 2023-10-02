@@ -2,7 +2,7 @@ import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
 import 'package:ewallet_app/bloc/transfer/transfer_bloc.dart';
 import 'package:ewallet_app/common/snackbar.dart';
 import 'package:ewallet_app/common/theme.dart';
-import 'package:ewallet_app/data/models/transfer_fomr_model.dart';
+import 'package:ewallet_app/data/models/transfer_form_model.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

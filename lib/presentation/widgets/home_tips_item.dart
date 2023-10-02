@@ -1,24 +1,23 @@
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/tip_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeTipsItem extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String url;
+  final TipModel tips;
+
   const HomeTipsItem({
     super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.url,
+  
+ required this.tips,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        if (await launchUrl(Uri.parse(url))) {
-          launchUrl(Uri.parse(url));
+        if (await launchUrl(Uri.parse(tips.url.toString()))) {
+          launchUrl(Uri.parse(tips.url.toString()));
         }
       },
       child: Container(
@@ -34,8 +33,8 @@ class HomeTipsItem extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
               ),
-              child: Image.asset(
-                imageUrl,
+              child: Image.network(
+                tips.thumbnail.toString(),
                 width: 155,
                 height: 110,
                 fit: BoxFit.cover,
@@ -49,7 +48,7 @@ class HomeTipsItem extends StatelessWidget {
                 horizontal: 12,
               ),
               child: Text(
-                title,
+                tips.title.toString(),
                 style: blackTextStyle.copyWith(
                   fontWeight: medium,
                   overflow: TextOverflow.ellipsis,

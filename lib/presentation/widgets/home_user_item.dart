@@ -1,13 +1,13 @@
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class HomeUserItem extends StatelessWidget {
-  final String imageUrl;
-  final String username;
+  final UserModel user;
+
   const HomeUserItem({
     super.key,
-    required this.imageUrl,
-    required this.username,
+    required this.user,
   });
 
   @override
@@ -35,17 +35,24 @@ class HomeUserItem extends StatelessWidget {
               shape: BoxShape.circle,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(
-                  imageUrl,
-                ),
+                image: user.profilePicture == null
+                    ? const AssetImage(
+                        'assets/img_profile.png',
+                      )
+                    : NetworkImage(user.profilePicture!) as ImageProvider,
               ),
             ),
           ),
-          Text(
-            '@$username',
-            style: blackTextStyle.copyWith(
-              fontSize: 12,
-              fontWeight: medium,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              '@${user.username}',
+              style: blackTextStyle.copyWith(
+                fontSize: 12,
+                fontWeight: medium,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
         ],

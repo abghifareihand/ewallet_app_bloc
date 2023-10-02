@@ -1,6 +1,11 @@
 import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
+import 'package:ewallet_app/bloc/tip/tip_bloc.dart';
+import 'package:ewallet_app/bloc/transaction/transaction_bloc.dart';
+import 'package:ewallet_app/bloc/user/user_bloc.dart';
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/transfer_form_model.dart';
+import 'package:ewallet_app/presentation/pages/transfer_amount_page.dart';
 import 'package:ewallet_app/presentation/widgets/home_latest_transaction_item.dart';
 import 'package:ewallet_app/presentation/widgets/home_service_item.dart';
 import 'package:ewallet_app/presentation/widgets/home_tips_item.dart';
@@ -359,59 +364,52 @@ class HomePage extends StatelessWidget {
   }
 
   Widget buildLatestTransaction() {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 30,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Latest Transactions',
-            style: blackTextStyle.copyWith(
-              fontSize: 16,
-              fontWeight: semiBold,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(22),
-            margin: const EdgeInsets.only(
-              top: 14,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: whiteColor,
-            ),
-            child: const Column(
-              children: [
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/ic_transaction_topup.png',
-                  title: 'Top Up',
-                  time: 'yesterday',
-                  value: 450000,
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/ic_transaction_cashback.png',
-                  title: 'Cashback',
-                  time: 'Sep 11',
-                  value: 22000,
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/ic_transaction_withdraw.png',
-                  title: 'Withdraw',
-                  time: 'Sep 2',
-                  value: 500000,
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/ic_transaction_electric.png',
-                  title: 'Electric',
-                  time: 'Feb 18',
-                  value: 12300000,
-                ),
-              ],
-            ),
-          ),
-        ],
+    return BlocProvider(
+      create: (context) => TransactionBloc()..add(GetTransaction()),
+      child: BlocBuilder<TransactionBloc, TransactionState>(
+        builder: (context, state) {
+          if (state is TransactionLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is TransactionSuccess) {
+            return Container(
+              margin: const EdgeInsets.only(
+                top: 30,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Latest Transactions',
+                    style: blackTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(22),
+                    margin: const EdgeInsets.only(
+                      top: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: whiteColor,
+                    ),
+                    child: Column(
+                      children: state.transactions.map((transaction) {
+                        return HomeLatestTransactionItem(
+                            transaction: transaction);
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -434,28 +432,40 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 14.0,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: ScrollController(),
-            child: const Row(
-              children: [
-                HomeUserItem(
-                  imageUrl: 'assets/img_friend_1.png',
-                  username: 'yuanita',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/img_friend_2.png',
-                  username: 'jani',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/img_friend_3.png',
-                  username: 'urip',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/img_friend_4.png',
-                  username: 'masa',
-                ),
-              ],
+          BlocProvider(
+            create: (context) => UserBloc()..add(GetUserRecent()),
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserSuccess) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: ScrollController(),
+                    child: Row(
+                      children: state.users.map((user) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TransferAmountPage(
+                                  data: TransferFormModel(
+                                    sendTo: user.username,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: HomeUserItem(user: user),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
         ],
@@ -482,31 +492,24 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 14.0,
           ),
-          const Wrap(
-            spacing: 17,
-            runSpacing: 18,
-            children: [
-              HomeTipsItem(
-                imageUrl: 'assets/image_tips_1.png',
-                title: 'Best tips for using a credit card',
-                url: 'https://pub.dev/',
-              ),
-              HomeTipsItem(
-                imageUrl: 'assets/image_tips_2.png',
-                title: 'Spot the good pie of finance model',
-                url: 'https://pub.dev/',
-              ),
-              HomeTipsItem(
-                imageUrl: 'assets/image_tips_3.png',
-                title: 'Great hack to get better advices',
-                url: 'https://pub.dev/',
-              ),
-              HomeTipsItem(
-                imageUrl: 'assets/image_tips_4.png',
-                title: 'Save more penny buy this instead',
-                url: 'https://pub.dev/',
-              ),
-            ],
+          BlocProvider(
+            create: (context) => TipBloc()..add(GetTips()),
+            child: BlocBuilder<TipBloc, TipState>(
+              builder: (context, state) {
+                if (state is TipSuccess) {
+                  return Wrap(
+                    spacing: 17,
+                    runSpacing: 18,
+                    children: state.tips.map((tips) {
+                      return HomeTipsItem(tips: tips);
+                    }).toList(),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ),
         ],
       ),

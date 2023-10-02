@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:ewallet_app/common/constants.dart';
 import 'package:ewallet_app/data/models/data_plan_form_model.dart';
-import 'package:ewallet_app/data/models/data_plan_model.dart';
 import 'package:ewallet_app/data/models/topup_form_model.dart';
-import 'package:ewallet_app/data/models/transfer_fomr_model.dart';
+import 'package:ewallet_app/data/models/transaction_model.dart';
+import 'package:ewallet_app/data/models/transfer_form_model.dart';
 import 'package:ewallet_app/data/services/local_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,6 +66,33 @@ class TransactionService {
       );
 
       if (response.statusCode != 200) {
+        throw jsonDecode(response.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TransactionModel>> getTransactions() async {
+    try {
+      final token = await LocalService().getToken();
+      final response = await http.get(
+        Uri.parse(
+          '$baseUrl/transactions',
+        ),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return List<TransactionModel>.from(
+          jsonDecode(response.body)['data'].map(
+            (transaction) => TransactionModel.fromJson(transaction),
+          ),
+        ).toList();
+      } else {
         throw jsonDecode(response.body)['message'];
       }
     } catch (e) {

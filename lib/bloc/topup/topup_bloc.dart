@@ -1,7 +1,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:ewallet_app/data/models/topup_form_model.dart';
-import 'package:ewallet_app/data/services/transaction_method_service.dart';
+import 'package:ewallet_app/data/services/transaction_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'topup_event.dart';
