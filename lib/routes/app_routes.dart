@@ -52,7 +52,7 @@ class AppRoutes {
 
       /// Data 
       '/data-provider': (context) => const DataProviderPage(),
-      '/data-package': (context) => const DataPackagePage(),
+      //'/data-package': (context) => const DataPackagePage(),
       '/data-success': (context) => const DataSuccessPage(),
     };
   }

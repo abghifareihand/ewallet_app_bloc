@@ -1,15 +1,14 @@
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/data_plan_model.dart';
 import 'package:flutter/material.dart';
 
 class DataPackageItem extends StatelessWidget {
-  final int amount;
-  final int price;
+  final DataPlanModel dataPlan;
   final bool isSelected;
   const DataPackageItem({
     super.key,
-    required this.amount,
-    required this.price,
+    required this.dataPlan,
     this.isSelected = false,
   });
 
@@ -34,7 +33,7 @@ class DataPackageItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '${amount}GB',
+            dataPlan.name.toString(),
             style: blackTextStyle.copyWith(
               fontSize: 32,
               fontWeight: medium,
@@ -44,7 +43,7 @@ class DataPackageItem extends StatelessWidget {
             height: 6.0,
           ),
           Text(
-            formatCurrency(price),
+            formatCurrency(dataPlan.price ?? 0),
             style: greyTextStyle.copyWith(
               fontSize: 12,
             ),

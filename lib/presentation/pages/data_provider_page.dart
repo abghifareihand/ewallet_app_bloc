@@ -1,12 +1,23 @@
+import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
+import 'package:ewallet_app/bloc/operator_crad/operator_card_bloc.dart';
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
+import 'package:ewallet_app/data/models/operator_card_model.dart';
+import 'package:ewallet_app/presentation/pages/data_package_page.dart';
 import 'package:ewallet_app/presentation/widgets/custom_button.dart';
 import 'package:ewallet_app/presentation/widgets/data_provider_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DataProviderPage extends StatelessWidget {
+class DataProviderPage extends StatefulWidget {
   const DataProviderPage({super.key});
 
+  @override
+  State<DataProviderPage> createState() => _DataProviderPageState();
+}
+
+class _DataProviderPageState extends State<DataProviderPage> {
+  OperatorCardModel? selectedOperatorCard;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,26 +60,34 @@ class DataProviderPage extends StatelessWidget {
               const SizedBox(
                 width: 16.0,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '8008 2208 1996',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2.0,
-                  ),
-                  Text(
-                    'Balance: ${formatCurrency(180000000)}',
-                    style: greyTextStyle.copyWith(
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthSuccess) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.user.cardNumber.toString().replaceAllMapped(
+                              RegExp(r".{4}"), (match) => "${match.group(0)} "),
+                          style: blackTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2.0,
+                        ),
+                        Text(
+                          'Balance: ${formatCurrency(state.user.balance ?? 0)}',
+                          style: greyTextStyle.copyWith(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                },
               ),
             ],
           ),
@@ -85,33 +104,59 @@ class DataProviderPage extends StatelessWidget {
           const SizedBox(
             height: 14.0,
           ),
-          const DataProviderItem(
-            name: 'Telkomsel',
-            imageUrl: 'assets/image_provider_telkomsel.png',
-            isSelected: true,
-          ),
-          const DataProviderItem(
-            name: 'Indosat',
-            imageUrl: 'assets/image_provider_indosat.png',
-          ),
-          const DataProviderItem(
-            name: 'Singtel',
-            imageUrl: 'assets/image_provider_singtel.png',
-          ),
-          const SizedBox(
-            height: 135.0,
-          ),
-          CustomFilledButton(
-            title: 'Continue',
-            onPressed: () {
-              Navigator.pushNamed(context, '/data-package');
-            },
+          BlocProvider(
+            create: (context) => OperatorCardBloc()..add(GetOperatorCard()),
+            child: BlocBuilder<OperatorCardBloc, OperatorCardState>(
+              builder: (context, state) {
+                if (state is OperatorCardSuccess) {
+                  return Column(
+                    children: state.operatorCards.map((operatorCard) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedOperatorCard = operatorCard;
+                          });
+                        },
+                        child: DataProviderItem(
+                          operatorCard: operatorCard,
+                          isSelected:
+                              operatorCard.id == selectedOperatorCard?.id,
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ),
           const SizedBox(
             height: 50.0,
           ),
         ],
       ),
+      floatingActionButton: (selectedOperatorCard != null)
+          ? Container(
+              margin: const EdgeInsets.all(24),
+              child: CustomFilledButton(
+                title: 'Continue',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DataPackagePage(
+                        operatorCard: selectedOperatorCard!,
+                      ),
+                    ),
+                  );
+                  //print('Selected Bank: ${selectedPayment?.code}');
+                },
+              ),
+            )
+          : Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
