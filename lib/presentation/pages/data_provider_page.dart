@@ -1,5 +1,5 @@
 import 'package:ewallet_app/bloc/auth/auth_bloc.dart';
-import 'package:ewallet_app/bloc/operator_crad/operator_card_bloc.dart';
+import 'package:ewallet_app/bloc/operator_card/operator_card_bloc.dart';
 import 'package:ewallet_app/common/currency.dart';
 import 'package:ewallet_app/common/theme.dart';
 import 'package:ewallet_app/data/models/operator_card_model.dart';
